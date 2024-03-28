@@ -71,5 +71,7 @@ yarn preview
 # bun
 bun run preview
 ```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+## TODO
+- template default [auth, landing page]
+- template supabase [auth,crud,role-manager] extend template default
+- template sass [pricing, billing] extend template supabase
