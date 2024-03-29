@@ -5,6 +5,9 @@ export default defineNuxtConfig({
   ui: {
     icons: ["carbon"],
   },
+  routeRules: {
+    "/auth": { redirect: "/auth/sign-in" },
+  },
   imports: {
     dirs: ["types/*.ts", "store/*.ts", "types/**/*.ts"],
   },
