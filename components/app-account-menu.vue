@@ -1,36 +1,36 @@
 <script setup lang="ts">
-const { metaSymbol } = useShortcuts()
-
 const items = computed(() => [
-    [{
+    [
+        {
         slot: 'account',
         label: '',
         disabled: true
-    }], [{
-        label: 'Settings',
-        icon: 'i-heroicons-cog-8-tooth',
-        to: '/settings'
-    }, {
-        label: 'Command menu',
-        icon: 'i-heroicons-command-line',
-        shortcuts: [metaSymbol.value, 'K'],
-        // click: () => {
-        //   isDashboardSearchModalOpen.value = true
-        // }
-    }, {
-        label: 'Help & Support',
-        icon: 'i-heroicons-question-mark-circle',
-        shortcuts: ['?'],
-        // click: () => isHelpSlideoverOpen.value = true
-    }], [{
-        label: 'Documentation',
-        icon: 'i-heroicons-book-open',
-        to: 'https://ui.nuxt.com/pro/getting-started',
-        target: '_blank'
-    },], [{
-        label: 'Sign out',
-        icon: 'i-heroicons-arrow-left-on-rectangle'
-    }]
+        }
+    ],
+    [
+        {
+            label: 'Profile',
+            icon: 'i-carbon-user',
+        },
+    ],
+    [
+        {
+            label: 'Help & Support',
+            icon: 'i-heroicons-question-mark-circle',
+        },
+        {
+            label: 'Documentation',
+            icon: 'i-heroicons-book-open',
+            to: 'https://ui.nuxt.com/pro/getting-started',
+            target: '_blank'
+        },
+    ],
+    [
+        {
+            label: 'Sign out',
+            icon: 'i-heroicons-arrow-left-on-rectangle'
+        }
+    ]
 ])
 </script>
 
