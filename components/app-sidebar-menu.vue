@@ -8,7 +8,7 @@ const menu: AppMenuItem[] = [
     {
         label: 'Task',
         icon: 'i-carbon-task',
-        to: '/task'
+        to: '/dashboard/task'
     }
 ] 
 </script>

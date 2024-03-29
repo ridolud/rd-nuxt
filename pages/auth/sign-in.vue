@@ -3,6 +3,10 @@ import { object, string, type InferType } from 'yup'
 import type { FormSubmitEvent } from '#ui/types'
 
 const router = useRouter()
+const client = useSupabaseClient()
+const user = useSupabaseUser()
+const toast = useToast()
+const { isLoading, finish: loadingFinish, start: loadingStrat } = useLoadingIndicator()
 
 definePageMeta({
     layout: 'full-center'
@@ -22,12 +26,28 @@ const state = reactive({
     password: undefined
 })
 
+watchEffect(async () => {
+    console.log(user.value)
+    if (user.value) {
+        await navigateTo('/dashboard')
+    }
+})
+
+
 const visibilityPassword = ref(false)
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
     // Do something with event.data
-    console.log(event.data)
-    router.push('/')
+    loadingStrat()
+    const { error } = await client.auth.signInWithPassword({
+        email: event.data.email,
+        password: event.data.password,
+    })
+
+    if (error) {
+        toast.add({ color: 'rose', title: "Error:", description: error.message })
+        loadingFinish()
+    }
 }
 </script>
 
@@ -58,7 +78,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                 <div class="my-2">
                     <NuxtLink class="text-primary" to="/auth/forgot-password">Forgot password?</NuxtLink>
                 </div>
-                <UButton size="lg" type="submit" block>
+                <UButton :loading="isLoading" size="lg" type="submit" block>
                     Sign In
                 </UButton>
             </UForm>

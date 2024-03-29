@@ -7,7 +7,9 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "supabase:start": "supabase start",
+    "supabase:stop": "supabase stop"
   },
   "dependencies": {
     "@iconify-json/carbon": "^1.1.31",
@@ -19,7 +21,9 @@
     "yup": "^1.4.0"
   },
   "devDependencies": {
+    "@nuxtjs/supabase": "^1.2.0",
     "@nuxtjs/tailwindcss": "^6.11.4",
+    "supabase": "^1.151.1",
     "typescript": "^5.4.3",
     "vue-tsc": "1"
   }

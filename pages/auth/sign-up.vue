@@ -6,6 +6,12 @@ definePageMeta({
     layout: 'full-center'
 })
 
+const client = useSupabaseClient()
+const user = useSupabaseUser()
+const toast = useToast()
+const { isLoading, finish: loadingFinish, start: loadingStrat } = useLoadingIndicator()
+const visibilityPassword = ref(false)
+
 const schema = object({
     name: string().required('Required'),
     email: string().email('Invalid email').required('Required'),
@@ -22,10 +28,28 @@ const state = reactive({
     password: undefined
 })
 
-const visibilityPassword = ref(false)
+watchEffect(async () => {
+    if (user.value) {
+        await navigateTo('/dashboard')
+    }
+});
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
-    console.log(event.data)
+    loadingStrat()
+    const { error } = await client.auth.signUp({
+        email: event.data.email,
+        password: event.data.password,
+        options: {
+            data: {
+                name: event.data.name,
+            }
+        }
+    })
+
+    if (error) {
+        toast.add({ color: 'rose', title: "Error:", description: error.message })
+        loadingFinish()
+    }
 }
 </script>
 
@@ -60,7 +84,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                         placeholder="Password" icon="i-carbon-password" />
                 </UFormGroup>
 
-                <UButton size="lg" type="submit" block>
+                <UButton :loading="isLoading" size="lg" type="submit" block>
                     Sign Up
                 </UButton>
 

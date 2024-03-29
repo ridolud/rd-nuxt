@@ -2,7 +2,11 @@
 import { object, string, type InferType } from 'yup'
 import type { FormSubmitEvent } from '#ui/types'
 
+const config = useRuntimeConfig()
 const router = useRouter()
+const toast = useToast()
+const client = useSupabaseClient()
+const { isLoading, finish: loadingFinish, start: loadingStrat } = useLoadingIndicator()
 
 definePageMeta({
     layout: 'full-center'
@@ -14,22 +18,29 @@ const schema = object({
 
 type Schema = InferType<typeof schema>
 
-const state = reactive({
-    email: undefined,
+const state = reactive<Schema>({
+    email: '',
 })
 
-const visibilityPassword = ref(false)
-
 async function onSubmit(event: FormSubmitEvent<Schema>) {
-    // Do something with event.data
-    console.log(event.data)
-    router.push('/')
+    loadingStrat()
+    const { error } = await client.auth.resetPasswordForEmail(event.data.email, {
+        redirectTo: `http:localhost/auth/reset-password`
+    })
+    if (error) {
+        toast.add({ color: 'rose', title: "Error:", description: error.message })
+        loadingFinish()
+    } else {
+        toast.add({ title: "Success:", description: "Reset password link has beed send" })
+        loadingFinish()
+    }
 }
 </script>
 
 <template>
     <div class="w-96 relative">
         <UCard>
+
             <template #header>
                 <div class="text-center">
                     <p class="text-2xl text-gray-900 dark:text-white">Forgot Password</p>

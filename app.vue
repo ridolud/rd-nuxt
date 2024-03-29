@@ -9,5 +9,6 @@ useHead({
 	<NuxtLoadingIndicator />
 	<NuxtLayout>
 		<NuxtPage />
+		<UNotifications />
 	</NuxtLayout>
 </template>

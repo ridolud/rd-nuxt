@@ -1,5 +1,24 @@
 <script setup lang="ts">
-const items = computed(() => [
+
+const client = useSupabaseClient()
+const toast = useToast()
+const router = useRouter()
+const { isLoading, finish: loadingFinish, start: loadingStrat } = useLoadingIndicator()
+
+
+const logout = async () => {
+    loadingStrat()
+    const { error } = await client.auth.signOut()
+    if (error) {
+        toast.add({ color: 'rose', title: "Error:", description: error.message })
+        loadingFinish()
+    } else {
+        router.replace('/auth')
+        loadingFinish()
+    }
+}
+
+const items = computed<AppMenuItem[][]>(() => [
     [
         {
         slot: 'account',
@@ -28,7 +47,10 @@ const items = computed(() => [
     [
         {
             label: 'Sign out',
-            icon: 'i-heroicons-arrow-left-on-rectangle'
+            icon: 'i-heroicons-arrow-left-on-rectangle',
+            click() {
+                logout()
+            },
         }
     ]
 ])
